@@ -1,0 +1,4 @@
+* Lunchbot
+
+Fetches relevant lunch data using curl and sends it to Slack.
+Reads the path of the Slack hook from an environment variable LUNCH_SECRET.
