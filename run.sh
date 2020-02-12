@@ -4,7 +4,7 @@
 if [ `date +%A` == "perjantai" ]; then
     FACTORY="$(curl -vs https://ravintolafactory.com/lounasravintolat/ravintolat/espoo-otaniemi/ 2>&1 | awk '/'`date +%A | sed 's/.*/\u&/'`'/{f=1} f; /Monday/{f=0}' | sed -e 's/<[^>]*>//g' | sed '$d')"
 else
-    FACTORY="$(curl -vs https://ravintolafactory.com/lounasravintolat/ravintolat/espoo-otaniemi/ 2>&1 | awk '/'`date +%A | sed 's/.*/\u&/'`'/{f=1} f; /'`date -d @$(($(date +%s)+84600)) +%A | sed 's/.*/\u&/'`'/{f=0}' | sed -e 's/<[^>]*>//g' | sed '$d')"
+    FACTORY="$(curl -vs https://ravintolafactory.com/lounasravintolat/ravintolat/espoo-otaniemi/ 2>&1 | awk '/'`date +%A | sed 's/.*/\u&/'`'/{f=1} f; /'`date -d tomorrow +%A | sed 's/.*/\u&/'`'/{f=0}' | sed -e 's/<[^>]*>//g' | sed '$d')"
 fi
 
 # Silinteri
@@ -15,7 +15,10 @@ SILINTERI=$(curl -s 'https://www.fazerfoodco.fi/modules/json/json/Index?costNumb
 # Maukas
 MAUKAS=$(curl -s 'https://www.mau-kas.fi/' | grep "block_level bold" | sed -e 's/<[^>]*>//g' | perl -MHTML::Entities -pe 'decode_entities($_);')
 
-TEXT="FACTORY:\n$FACTORY\n\nSILINTERI:\n$SILINTERI\n\nMAUKAS:\n$MAUKAS"
+# Kipsari
+KIPSARI=$(WD=`date +%a` && curl -vs http://www.kipsari.com/ 2>&1 | grep -o -E "`date +%a` [^<]*<" | tr -d \< | sed "s/$WD //")
+
+TEXT="FACTORY:\n$FACTORY\n\nSILINTERI:\n$SILINTERI\n\nMAUKAS:\n$MAUKAS\n\nKIPSARI:\n$KIPSARI"
 
 echo $TEXT
 
