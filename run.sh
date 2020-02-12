@@ -16,7 +16,7 @@ SILINTERI=$(curl -s 'https://www.fazerfoodco.fi/modules/json/json/Index?costNumb
 MAUKAS=$(curl -s 'https://www.mau-kas.fi/' | grep "block_level bold" | sed -e 's/<[^>]*>//g' | perl -MHTML::Entities -pe 'decode_entities($_);')
 
 # Kipsari
-KIPSARI=$(WD=`date +%a` && curl -vs http://www.kipsari.com/ 2>&1 | grep -o -E "`date +%a` [^<]*<" | tr -d \< | sed "s/$WD //")
+KIPSARI=$(WD=`date +%a` WD=$(tr [:lower:] [:upper:] <<< ${WD:0:1})${WD:1} && curl -vs http://www.kipsari.com/ 2>&1 | grep -o -E ">$WD [^<]*<" | sed "s/^>$WD \([^<]*\)<$/\1/")
 
 TEXT="FACTORY:\n$FACTORY\n\nSILINTERI:\n$SILINTERI\n\nMAUKAS:\n$MAUKAS\n\nKIPSARI:\n$KIPSARI"
 
