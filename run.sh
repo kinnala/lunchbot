@@ -15,7 +15,7 @@ SILINTERI=$(curl -s 'https://www.fazerfoodco.fi/modules/json/json/Index?costNumb
 echo "${SILINTERI}"
 
 # Maukas
-MAUKAS=$(curl -s 'https://www.mau-kas.fi/' | grep "block_level bold" | sed -e 's/<[^>]*>//g' | perl -MHTML::Entities -pe 'decode_entities($_);')
+MAUKAS=$(curl -s 'https://www.mau-kas.fi/' | grep "block_level bold" | sed -e 's/<[^>]*>//g' | perl -MHTML::Entities -pe 'decode_entities($_);' | iconv -f ISO-8859-1 -t UTF-8 | sed '/VUORIMIEHEN/d')
 echo "${MAUKAS}"
 
 # Kipsari
