@@ -23,7 +23,7 @@ KIPSARI=$(WD=`date +%a` WD=$(tr [:lower:] [:upper:] <<< ${WD:0:1})${WD:1} && cur
 echo "${KIPSARI}"
 
 # Pizza bar
-PIZZABAR="$(curl -s 'https://www.pizzabar.fi/lounas' | grep -B 4 Kasvis | sed '/^$/d' | perl -0777 -ne 'print "$1 $2LINEBREAK$3\n" while /[^\n]*(Ma|Ti|Ke|To|Pe)[^\n]*\n[^\n]*(Liha:[^<]*).*?(Kasvis:[^<]*)/smg' | (mapfile -t; echo "${MAPFILE[(($(date +%u)-1))]}") | cut -c 4- | sed s/LINEBREAK/\\n/)"
+PIZZABAR="$(curl -s 'https://www.pizzabar.fi/lounas' | grep -A6 -E "(Maanantai|Tiistai|Keskiviikko|Torstai|Perjantai) [0-9].?\.[0-9].?" | sed '/^$/d' | grep "hamburgerheaven" | perl -0777 -ne 'print "$1 $2LINEBREAK$3 $4 $5\n" while /[^\n]*(Maanantai|Tistai|Keskiviikko|Torstai|Perjantai)(?:.*?(?:burgerheaven\"\>(?=[a-zA-Z])))(.*?)(?=\<)[^\n]*\n(?:.*?(?:burgerheaven\"\>(?=[a-zA-Z])))(.*?)(?=\<)/smg' | (mapfile -t; echo "${MAPFILE[(($(date +%u)-2))]}") | cut -d ' ' -f  2- | sed s/LINEBREAK/\\n/ | sed s/'\&amp;'/'\&'/ | sed s/'\&nbsp;'/' '/ | sed s/'\&egrave;'/e/)"
 echo "${PIZZABAR}"
 
 if [[ -z "${LUNCH_SECRET}" ]]; then
